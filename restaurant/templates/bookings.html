@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+
+{% block title %}All Reservations - Little Lemon{% endblock %}
+
+{% block content %}
+<section style="background: #f8f9fa; padding: 3rem 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        
+        <!-- Header -->
+        <div style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; overflow: hidden;">
+            <div style="background: #495e57; color: white; padding: 2rem; text-align: center;">
+                <h1 style="font-family: 'Markazi Text', serif; font-size: 3rem; margin-bottom: 0.5rem; color: #f4ce14;">All Reservations</h1>
+                <p style="font-size: 1.1rem; opacity: 0.9;">View and manage restaurant bookings</p>
+            </div>
+            
+            <!-- Controls -->
+            <div style="padding: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <button onclick="refreshData()" style="background: #f4ce14; color: #333; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh Data
+                </button>
+                <button onclick="toggleView()" style="background: #495e57; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-exchange-alt"></i>
+                    Toggle View
+                </button>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div id="table-view" style="display: block;">
+            <div style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 2rem;">
+                <div id="reservations-table">
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f4ce14; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin-bottom: 1rem;"></div>
+                        <p style="font-size: 1.1rem;">Loading reservations...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JSON View -->
+        <div id="json-view" style="display: none;">
+            <div style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 2rem;">
+                <div style="background: #e8f4f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #495e57;">
+                    <i class="fas fa-info-circle" style="color: #f4ce14; margin-right: 0.5rem;"></i>
+                    Raw JSON data from the API endpoint
+                </div>
+                <div id="json-data" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 2rem; margin-top: 2rem;">
+            <h3 style="font-family: 'Markazi Text', serif; font-size: 2rem; color: #495e57; margin-bottom: 1.5rem; text-align: center;">
+                <i class="fas fa-chart-bar" style="color: #f4ce14; margin-right: 0.5rem;"></i>
+                Booking Statistics
+            </h3>
+            <div id="statistics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #f4ce14;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #495e57;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.date-group {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.date-header {
+    background: #495e57;
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.date-header .count {
+    background: #f4ce14;
+    color: #333;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    margin-left: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #f8f9fa;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #495e57;
+    border-bottom: 2px solid #e1e5e9;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+tr:hover {
+    background: rgba(244, 206, 20, 0.05);
+}
+
+.status-upcoming {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-completed {
+    color: #6c757d;
+    font-weight: 600;
+}
+</style>
+
+<script>
+let currentView = 'table';
+let allBookings = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadReservations();
+});
+
+function loadReservations() {
+    const tableContainer = document.getElementById('reservations-table');
+    const jsonContainer = document.getElementById('json-data');
+    
+    // Show loading state
+    if (currentView === 'table') {
+        tableContainer.innerHTML = '<div style="text-align: center; padding: 3rem; color: #666;"><div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f4ce14; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin-bottom: 1rem;"></div><p style="font-size: 1.1rem;">Loading reservations...</p></div>';
+    }
+    
+    fetch('/bookings/')
+        .then(response => response.json())
+        .then(data => {
+            allBookings = data.bookings;
+            displayTableView(data.bookings);
+            displayJsonView(data);
+            displayStatistics(data.bookings);
+        })
+        .catch(error => {
+            tableContainer.innerHTML = '<div style="background: #f8d7da; color: #721c24; padding: 2rem; border-radius: 8px; text-align: center;"><i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i><h4>Error Loading Reservations</h4><p>Please try again later.</p></div>';
+            console.error('Error:', error);
+        });
+}
+
+function displayTableView(bookings) {
+    const container = document.getElementById('reservations-table');
+    
+    if (bookings.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: #666;">
+                <i class="fas fa-calendar-times" style="font-size: 4rem; color: #f4ce14; margin-bottom: 1rem; display: block;"></i>
+                <h3 style="margin-bottom: 1rem;">No Reservations Found</h3>
+                <p>There are currently no bookings in the system.</p>
+                <a href="/book/" style="display: inline-block; margin-top: 1.5rem; background: #f4ce14; color: #333; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-plus"></i>
+                    Make First Booking
+                </a>
+            </div>
+        `;
+        return;
+    }
+    
+    // Group bookings by date
+    const groupedBookings = groupBookingsByDate(bookings);
+    
+    let html = '';
+    Object.keys(groupedBookings).sort().forEach(date => {
+        const dateBookings = groupedBookings[date];
+        const formattedDate = new Date(date).toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        html += `
+            <div class="date-group">
+                <div class="date-header">
+                    <i class="fas fa-calendar"></i> ${formattedDate}
+                    <span class="count">${dateBookings.length} booking${dateBookings.length > 1 ? 's' : ''}</span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user"></i> Guest Name</th>
+                            <th><i class="fas fa-clock"></i> Time</th>
+                            <th><i class="fas fa-info-circle"></i> Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        dateBookings.forEach(booking => {
+            const timeFormatted = `${booking.reservation_slot}:00 ${booking.reservation_slot >= 12 ? 'PM' : 'AM'}`;
+            const status = new Date(booking.reservation_date) < new Date() ? 'Completed' : 'Upcoming';
+            const statusClass = status === 'Completed' ? 'status-completed' : 'status-upcoming';
+            
+            html += `
+                <tr>
+                    <td><strong>${booking.first_name}</strong></td>
+                    <td>${timeFormatted}</td>
+                    <td class="${statusClass}">${status}</td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function displayJsonView(data) {
+    const container = document.getElementById('json-data');
+    container.innerHTML = `<pre style="margin: 0; font-size: 0.9rem; line-height: 1.4; white-space: pre-wrap;">${JSON.stringify(data, null, 2)}</pre>`;
+}
+
+function displayStatistics(bookings) {
+    const container = document.getElementById('statistics');
+    
+    // Calculate statistics
+    const totalBookings = bookings.length;
+    const uniqueDates = [...new Set(bookings.map(b => b.reservation_date))].length;
+    const upcomingBookings = bookings.filter(b => new Date(b.reservation_date) >= new Date()).length;
+    const mostPopularTime = getMostPopularTime(bookings);
+    
+    container.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-number">${totalBookings}</div>
+            <div class="stat-label">Total Bookings</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${uniqueDates}</div>
+            <div class="stat-label">Unique Dates</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${upcomingBookings}</div>
+            <div class="stat-label">Upcoming</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">${mostPopularTime}:00</div>
+            <div class="stat-label">Popular Time</div>
+        </div>
+    `;
+}
+
+function groupBookingsByDate(bookings) {
+    return bookings.reduce((groups, booking) => {
+        const date = booking.reservation_date;
+        if (!groups[date]) {
+            groups[date] = [];
+        }
+        groups[date].push(booking);
+        return groups;
+    }, {});
+}
+
+function getMostPopularTime(bookings) {
+    if (bookings.length === 0) return 'N/A';
+    
+    const timeCounts = bookings.reduce((counts, booking) => {
+        const time = booking.reservation_slot;
+        counts[time] = (counts[time] || 0) + 1;
+        return counts;
+    }, {});
+    
+    return Object.keys(timeCounts).reduce((a, b) => timeCounts[a] > timeCounts[b] ? a : b);
+}
+
+function toggleView() {
+    const tableView = document.getElementById('table-view');
+    const jsonView = document.getElementById('json-view');
+    
+    if (currentView === 'table') {
+        tableView.style.display = 'none';
+        jsonView.style.display = 'block';
+        currentView = 'json';
+    } else {
+        tableView.style.display = 'block';
+        jsonView.style.display = 'none';
+        currentView = 'table';
+    }
+}
+
+function refreshData() {
+    loadReservations();
+    
+    // Show refresh feedback
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }, 1000);
+}
+</script>
+{% endblock %}

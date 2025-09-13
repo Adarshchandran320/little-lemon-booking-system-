@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Little Lemon{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-text">
+            <h1>Little Lemon</h1>
+            <h2>Chicago</h2>
+            <p>We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</p>
+            <a href="{% url 'book' %}" class="hero-btn">Reserve Table</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop" alt="Restaurant Food">
+        </div>
+    </div>
+</section>
+
+<!-- Specials Section -->
+<section class="specials-section">
+    <div class="specials-container">
+        <div class="specials-header">
+            <h2>This weeks specials!</h2>
+            <button class="online-menu-btn">Online Menu</button>
+        </div>
+        
+        <div class="food-cards">
+            <!-- Greek Salad Card -->
+            <div class="food-card">
+                <img src="{% static 'restaurant/images/greek salad.jpg' %}" alt="Greek Salad">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3 class="card-title">Greek salad</h3>
+                        <span class="card-price">$12.99</span>
+                    </div>
+                    <p class="card-description">The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
+                    <button class="order-btn">Order Now</button>
+                </div>
+            </div>
+
+            <!-- Bruchetta Card -->
+            <div class="food-card">
+                <img src="{% static "restaurant\images\bruchetta.svg" %}" alt="Bruchetta">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3 class="card-title">Bruchetta</h3>
+                        <span class="card-price">$5.99</span>
+                    </div>
+                    <p class="card-description">Our Bruchetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil.</p>
+                    <button class="order-btn">Order Now</button>
+                </div>
+            </div>
+
+            <!-- Lemon Dessert Card -->
+            <div class="food-card">
+                <img src="{% static 'restaurant/images/desert.jpg' %}" alt="Lemon Dessert">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3 class="card-title">Lemon Dessert</h3>
+                        <span class="card-price">$4.78</span>
+                    </div>
+                    <p class="card-description">This comes straight from grandma's recipe book, every last ingredient has been sourced and is as authentic as can be imagined.</p>
+                    <button class="order-btn">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

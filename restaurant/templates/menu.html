@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu - Little Lemon{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-font" style="font-family: 'Markazi Text', serif; font-size: 3.5rem; color: #333;">Our Menu</h1>
+            <p class="lead" style="font-size: 1.2rem; color: #495e57;">Authentic Mediterranean cuisine with a modern twist</p>
+        </div>
+        
+        <div class="mb-5">
+            <h2 class="display-font mb-4" style="font-family: 'Markazi Text', serif; font-size: 2.5rem; color: #495e57; border-bottom: 2px solid #f4ce14; padding-bottom: 0.5rem; display: inline-block;">Appetizers</h2>
+            <div class="food-cards">
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&h=200&fit=crop" alt="Hummus" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Hummus</h3>
+                            <span class="card-price">$6.99</span>
+                        </div>
+                        <p class="card-description">Creamy chickpea dip with tahini, olive oil, and traditional spices.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src='{% static "restaurant\images\bruchetta.svg" %}' alt="Bruchetta" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Bruchetta</h3>
+                            <span class="card-price">$5.99</span>
+                        </div>
+                        <p class="card-description">Grilled bread with garlic, tomatoes, and fresh herbs.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src="{% static "restaurant\images\stuffed_grape.jpg" %}" alt="Stuffed Grape Leaves" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Dolmades</h3>
+                            <span class="card-price">$8.99</span>
+                        </div>
+                        <p class="card-description">Grape leaves stuffed with rice, herbs, and Mediterranean spices.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-5">
+            <h2 class="display-font mb-4" style="font-family: 'Markazi Text', serif; font-size: 2.5rem; color: #495e57; border-bottom: 2px solid #f4ce14; padding-bottom: 0.5rem; display: inline-block;">Main Courses</h2>
+            <div class="food-cards">
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=200&fit=crop" alt="Grilled Salmon" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Grilled Salmon</h3>
+                            <span class="card-price">$24.99</span>
+                        </div>
+                        <p class="card-description">Fresh Atlantic salmon with lemon herbs and roasted vegetables.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=200&fit=crop" alt="Pasta" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Mediterranean Pasta</h3>
+                            <span class="card-price">$18.99</span>
+                        </div>
+                        <p class="card-description">Penne with sun-dried tomatoes, olives, and feta cheese.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&h=200&fit=crop" alt="Lamb Chops" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Lamb Chops</h3>
+                            <span class="card-price">$28.99</span>
+                        </div>
+                        <p class="card-description">Tender lamb chops with rosemary and Mediterranean seasoning.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-5">
+            <h2 class="display-font mb-4" style="font-family: 'Markazi Text', serif; font-size: 2.5rem; color: #495e57; border-bottom: 2px solid #f4ce14; padding-bottom: 0.5rem; display: inline-block;">Desserts</h2>
+            <div class="food-cards">
+                <div class="food-card">
+                    <img src="{% static 'restaurant/images/desert.jpg' %}" alt="Lemon Dessert" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Lemon Dessert</h3>
+                            <span class="card-price">$4.78</span>
+                        </div>
+                        <p class="card-description">Traditional lemon dessert from grandma's recipe book.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=200&fit=crop" alt="Baklava" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Baklava</h3>
+                            <span class="card-price">$6.99</span>
+                        </div>
+                        <p class="card-description">Layers of phyllo pastry with nuts and honey syrup.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+                
+                <div class="food-card">
+                    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=200&fit=crop" alt="Tiramisu" class="card-img-top">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">Tiramisu</h3>
+                            <span class="card-price">$7.99</span>
+                        </div>
+                        <p class="card-description">Classic Italian dessert with coffee and mascarpone.</p>
+                        <button class="order-btn">Order Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

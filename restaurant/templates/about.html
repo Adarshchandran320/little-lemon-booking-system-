@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Little Lemon{% endblock %}
+
+{% block content %}
+<style>
+    .section-title {
+        font-family: 'Markazi Text', serif;
+        font-size: 3rem;
+        font-weight: 500;
+        color: #333;
+    }
+    .display-font {
+        font-family: 'Markazi Text', serif;
+    }
+    .team-card {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        padding: 1.5rem;
+    }
+    .team-card:hover {
+        transform: translateY(-5px);
+    }
+    .value-card {
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+</style>
+
+<section class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="section-title">About Little Lemon</h1>
+                <p class="lead" style="color: #495e57;">A family tradition of authentic Mediterranean cuisine</p>
+                <p>Based in Chicago, Illinois, Little Lemon is a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist. The chefs draw inspiration from Italian, Greek, and Turkish culture and have a menu of 12-15 items that they rotate seasonally.</p>
+                <p>The restaurant has a rustic and relaxed atmosphere with moderate prices, making it a popular place for a meal any time of the day.</p>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&h=400&fit=crop" alt="Restaurant Interior" class="img-fluid rounded" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-font mb-4" style="font-size: 2.5rem; color: #495e57;">Our Story</h2>
+                <p class="mb-4">Little Lemon opened in 1995 by two Italian brothers, Adrian and Mario, who moved to the United States to share their family's recipes from their hometown in Italy.</p>
+                <p class="mb-4">Over the years, they have built up a loyal following of food lovers who return again and again to enjoy the homemade pasta, bread, and traditional dishes prepared with love and care.</p>
+                <p>Today, Little Lemon continues to serve the same authentic recipes while embracing modern culinary techniques and local ingredients.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Our Values</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center value-card">
+                    <div class="mb-3">
+                        <i class="fas fa-heart fa-3x" style="color: #f4ce14;"></i>
+                    </div>
+                    <h4 class="display-font" style="font-size: 1.8rem; color: #495e57;">Family Tradition</h4>
+                    <p>Every dish is prepared with recipes passed down through generations, maintaining the authentic flavors of the Mediterranean.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center value-card">
+                    <div class="mb-3">
+                        <i class="fas fa-leaf fa-3x" style="color: #f4ce14;"></i>
+                    </div>
+                    <h4 class="display-font" style="font-size: 1.8rem; color: #495e57;">Fresh Ingredients</h4>
+                    <p>We source only the finest, freshest ingredients from local farms and trusted suppliers to ensure quality in every bite.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="text-center value-card">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x" style="color: #f4ce14;"></i>
+                    </div>
+                    <h4 class="display-font" style="font-size: 1.8rem; color: #495e57;">Community</h4>
+                    <p>Little Lemon is more than a restaurant - we're a gathering place where friends and families create lasting memories.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Meet Our Team</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6 mb-4">
+                <div class="text-center team-card">
+                    <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop&crop=face" alt="Chef Adrian" class="rounded-circle mx-auto mb-3" style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #f4ce14;">
+                    <div class="card-body">
+                        <h4 class="display-font" style="font-size: 1.8rem; color: #495e57;">Chef Adrian</h4>
+                        <p class="text-muted">Co-founder & Head Chef</p>
+                        <p>With over 30 years of experience, Adrian brings authentic Italian flavors to every dish he creates.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-6 mb-4">
+                <div class="text-center team-card">
+                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=300&h=300&fit=crop&crop=face" alt="Chef Mario" class="rounded-circle mx-auto mb-3" style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #f4ce14;">
+                    <div class="card-body">
+                        <h4 class="display-font" style="font-size: 1.8rem; color: #495e57;">Chef Mario</h4>
+                        <p class="text-muted">Co-founder & Pastry Chef</p>
+                        <p>Mario specializes in traditional desserts and handmade pasta, keeping family recipes alive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
